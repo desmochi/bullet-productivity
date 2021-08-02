@@ -190,4 +190,11 @@
             // Fire function
             // Show Self
           }
+          // For loop enemies - Enemies class
+          // Enemies can't collide
+          // Collision of player and enemies results in game over. 
           
+          // Projectile
+          // - left click or space to fire bullet 
+          // Collision w/ enemy enemy disappears 
+          // Show Self - small circle 
