@@ -143,7 +143,7 @@
             // Show Self function
             showEnemy() {
               stroke(360, 100, 50);
-              fill();
+              fill(360, 100, 50);
               rect(this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight);
             }
             // Collision function
