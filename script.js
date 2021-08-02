@@ -100,17 +100,17 @@
 			  {
                 this.x = 0;
               }
-              if (this.x > width+this.playerWidth) 
+              if (this.x > width-this.playerWidth) 
 			  {
-                this.x = width;
+                this.x = width-this.playerWidth;
               }
               if (this.y < 0) 
 			  {
                 this.y = 0;
               }
-              if (this.y > height+this.playerHeight) 
+              if (this.y > height-this.playerHeight) 
 			  {
-                this.y = height;
+                this.y = height-this.playerHeight;
               }
           
               //Collision between Player and Enemy
