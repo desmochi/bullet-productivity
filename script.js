@@ -142,7 +142,7 @@
               this.enemyY = random(200, 400);
               this.enemyWidth = 50;
               this.enemyHeight = 50;
-              this.velocity = 5;
+              this.velocity = 2;
             }
             // Move function
           
