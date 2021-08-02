@@ -100,7 +100,7 @@
 			  {
                 this.x = 0;
               }
-              if (this.x > width+this.playerWidth) 
+              if (this.x > width-this.playerWidth) 
 			  {
                 this.x = width;
               }
@@ -108,7 +108,7 @@
 			  {
                 this.y = 0;
               }
-              if (this.y > height+this.playerHeight) 
+              if (this.y > height-this.playerHeight) 
 			  {
                 this.y = height;
               }
