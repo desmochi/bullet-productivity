@@ -62,7 +62,7 @@
               if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
                 this.y -= this.velocity;
               }
-              if (keyIsDown(DOWN_ARROW) || keyIsDown(83))) {
+              if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
                 this.y += this.velocity;
               }
               if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
