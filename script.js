@@ -6,7 +6,7 @@
           keyCode, push, pop, drawSprites, httpGet, keyIsDown, max, min, textFont, textAlign, CENTER, UP_ARROW, 
           sqrt, noFill, collideRectRect, LEFT_ARROW, frameRate, RIGHT_ARROW, DOWN_ARROW, textSize, round */
 
-          let backgroundColor, player, enemy, score, hit, isAlive;
+          let backgroundColor, player, enemy, score, hit, isAlive, enemies;
 
           // Create objects for bad guys
           // create object for main character
@@ -175,7 +175,16 @@
               rect(this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight);
             }
             // Collision function
-            // isAlive function
+			collideEnemy()
+			{
+				for(var i = 0; i < enemies.length; i++)
+				{
+					if(collideRectRect())
+					{
+						
+					}
+				}
+			}
           }
           
           //Class for projectiles/bullets
