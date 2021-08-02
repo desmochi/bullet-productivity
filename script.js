@@ -29,7 +29,12 @@
             colorMode(HSB, 360, 100, 100);
             backgroundColor = 95;
             player = new Player();
-            enemy = new Enemy();
+			
+			enemies = [];
+			for(var i = 0; i < 3; i++)
+			{
+				enemies.push(new Enemy());
+			}
             score = 0;
             isAlive = true;
           }
@@ -45,9 +50,12 @@
 			{
               player.movePlayer();
               player.showPlayer();
-              enemy.showEnemy();
+			  for(var i = 0; i < enemies.length; i++)
+			  {
+				enemies[i].showEnemy();
+				enemies[i].moveEnemy();
+			  }
               player.collidePlayer();
-              enemy.moveEnemy();
             }
           }
           
