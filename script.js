@@ -138,8 +138,8 @@
 		  {
             constructor() 
 			{
-              this.enemyX = random(200, 400);
-              this.enemyY = random(200, 400);
+              this.enemyX = random(100, 500);
+              this.enemyY = random(100, 500);
               this.enemyWidth = 35;
               this.enemyHeight = 35;
               this.velocity = 2;
