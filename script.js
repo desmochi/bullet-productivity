@@ -148,18 +148,15 @@
           
             moveEnemy() 
 			{
-              var directionX;
-              var directionY;
-              var hypotenuse;
-          
-              directionX = player.x - this.enemyX;
-              directionY = player.y - this.enemyY;
-              hypotenuse = sqrt(directionX ** 2 + directionY ** 2);
+              var directionX = player.x - this.enemyX;
+              var directionY = player.y - this.enemyY;
+              var hypotenuse = sqrt(directionX ** 2 + directionY ** 2);
           
               directionX /= hypotenuse;
               directionY /= hypotenuse;
+			  
               this.enemyX += directionX * this.velocity;
-              this.enemyY += directionX * this.velocity;
+              this.enemyY += directionY * this.velocity;
             }
           
             // Show Self function
