@@ -140,8 +140,8 @@
 			{
               this.enemyX = random(200, 400);
               this.enemyY = random(200, 400);
-              this.enemyWidth = 50;
-              this.enemyHeight = 50;
+              this.enemyWidth = 35;
+              this.enemyHeight = 35;
               this.velocity = 2;
             }
             // Move function
