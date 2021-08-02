@@ -92,7 +92,7 @@
                 this.y = 0;
               }
               if (this.y > height) {
-                this.y = height;
+                this.y = height-10;
               }
           
               //Collision between Player and Enemy
@@ -142,7 +142,6 @@
           
             // Show Self function
             showEnemy() {
-              stroke(360, 100, 50);
               fill(360, 100, 50);
               rect(this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight);
             }
