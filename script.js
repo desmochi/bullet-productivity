@@ -100,7 +100,7 @@
 			  {
                 this.x = 0;
               }
-              if (this.x > width) 
+              if (this.x > width+this.playerWidth) 
 			  {
                 this.x = width;
               }
@@ -108,7 +108,7 @@
 			  {
                 this.y = 0;
               }
-              if (this.y > height) 
+              if (this.y > height+this.playerHeight) 
 			  {
                 this.y = height;
               }
@@ -160,9 +160,13 @@
             }
           
             // Show Self function
+<<<<<<< HEAD
+            showEnemy() {
+=======
             showEnemy() 
 			{
               stroke(360, 100, 50);
+>>>>>>> 3efbfda327a3ab83cff15220ff83890efef9ec87
               fill(360, 100, 50);
               rect(this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight);
             }
