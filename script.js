@@ -22,7 +22,8 @@
           // Enemy: Rectangle  - bigger than the player
           // MC: Square
           
-          function setup() {
+          function setup() 
+		  {
             // Canvas & color settings
             createCanvas(600, 600);
             colorMode(HSB, 360, 100, 100);
@@ -33,11 +34,15 @@
             isAlive = true;
           }
           
-          function draw() {
+          function draw() 
+		  {
             background(backgroundColor);
-            if (isAlive == false) {
+            if (isAlive == false) 
+			{
               text("Game Over", 20, 100);
-            } else {
+            }
+			else 
+			{
               player.movePlayer();
               player.showPlayer();
               enemy.showEnemy();
@@ -47,8 +52,10 @@
           }
           
           //Class for the main character
-          class Player {
-            constructor() {
+          class Player 
+		  {
+            constructor() 
+			{
               this.x = width * 0.1;
               this.y = height / 2;
               this.playerWidth = 25;
@@ -58,40 +65,51 @@
           
             // Move function
           
-            movePlayer() {
-              if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
+            movePlayer() 
+			{
+              if (keyIsDown(UP_ARROW) || keyIsDown(87)) 
+			  {
                 this.y -= this.velocity;
               }
-              if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
+              if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) 
+			  {
                 this.y += this.velocity;
               }
-              if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
+              if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) 
+			  {
                 this.x -= this.velocity;
               }
-              if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
+              if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) 
+			  {
                 this.x += this.velocity;
               }
             }
           
-            showPlayer() {
+            showPlayer() 
+			{
               // draw the dot
               fill(200, 80, 70);
               noStroke();
               rect(this.x, this.y, this.playerWidth, this.playerHeight);
             }
           
-            collidePlayer() {
+            collidePlayer() 
+			{
               //Collision with wall
-              if (this.x < 0) {
+              if (this.x < 0) 
+			  {
                 this.x = 0;
               }
-              if (this.x > width) {
+              if (this.x > width) 
+			  {
                 this.x = width;
               }
-              if (this.y < 0) {
+              if (this.y < 0) 
+			  {
                 this.y = 0;
               }
-              if (this.y > height) {
+              if (this.y > height) 
+			  {
                 this.y = height;
               }
           
@@ -108,15 +126,18 @@
                 Enemy.enemyHeight
               );
           
-              if (hit) {
+              if (hit) 
+			  {
                 isAlive = false;
               }
             }
           }
           
           //Class for the enemy/minions
-          class Enemy {
-            constructor() {
+          class Enemy 
+		  {
+            constructor() 
+			{
               this.enemyX = random(200, 400);
               this.enemyY = random(200, 400);
               this.enemyWidth = 50;
@@ -125,7 +146,8 @@
             }
             // Move function
           
-            moveEnemy() {
+            moveEnemy() 
+			{
               var directionX;
               var directionY;
               var hypotenuse;
@@ -141,7 +163,8 @@
             }
           
             // Show Self function
-            showEnemy() {
+            showEnemy() 
+			{
               stroke(360, 100, 50);
               fill(360, 100, 50);
               rect(this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight);
@@ -151,8 +174,12 @@
           }
           
           //Class for projectiles/bullets
-          class Projectile {
-            constructor() {}
+          class Projectile 
+		  {
+            constructor() 
+			{
+				
+			}
             // Key Pressed
             // Collision function
             // Fire function
