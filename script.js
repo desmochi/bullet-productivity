@@ -160,13 +160,9 @@
             }
           
             // Show Self function
-<<<<<<< HEAD
-            showEnemy() {
-=======
             showEnemy() 
 			{
               stroke(360, 100, 50);
->>>>>>> 3efbfda327a3ab83cff15220ff83890efef9ec87
               fill(360, 100, 50);
               rect(this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight);
             }
