@@ -85,14 +85,14 @@
               if (this.x < 0) {
                 this.x = 0;
               }
-              if (this.x > width) {
+              if (this.x > width+player.playerWidth) {
                 this.x = width;
               }
               if (this.y < 0) {
                 this.y = 0;
               }
-              if (this.y > height) {
-                this.y = height-10;
+              if (this.y > height+this.playerHeight) {
+                this.y = height;
               }
           
               //Collision between Player and Enemy
