@@ -35,15 +35,14 @@
               for(var i = 0; i < 3; i++) {
                   enemies.push(new Enemy());
               }
-              projectileIndex = -1;
-          
           }
                     
           function draw() {
               background(backgroundColor);
               if (isAlive == false) {
-                  text("Game Over", 20, 100);
-              } else {
+                  text("Game Over", width/2, height/2);
+              } 
+              else {
                   player.collidePlayer();
                   player.movePlayer();
                   player.showPlayer();
@@ -64,27 +63,27 @@
           //Class for the main character
           class Player {
               constructor() {
-                  this.x = width * 0.1;
-                  this.y = height / 2;
+                  this.playerX = width * 0.1;
+                  this.playerY = height / 2;
                   this.playerWidth = 25;
                   this.playerHeight = 25;
-                  this.velocity = 3;
+                  this.playerVelocity = 3;
           }
                     
               // Move function
                     
               movePlayer() {
                   if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
-                  this.y -= this.velocity;
+                  this.playerY -= this.playerVelocity;
                   }
                   if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
-                  this.y += this.velocity;
+                  this.playerY += this.playerVelocity;
                   }
                   if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
-                  this.x -= this.velocity;
+                  this.playerX -= this.playerVelocity;
                   }
                   if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
-                  this.x += this.velocity;
+                  this.playerX += this.playerVelocity;
                   }
               }
                     
@@ -92,40 +91,35 @@
                   // draw the dot
                   fill(200, 80, 70);
                   noStroke();
-                  rect(this.x, this.y, this.playerWidth, this.playerHeight);
+                  rect(this.playerX, this.playerY, this.playerWidth, this.playerHeight);
               }
                     
               collidePlayer() {
                   //Collision with wall
-                  if (this.x < 0) {
-                      this.x = 0;
+                  if (this.playerX < 0) {
+                      this.playerX = 0;
                   }
-                  if (this.x > width - this.playerWidth) {
-                      this.x = width - this.playerWidth;
+                  if (this.playerX > width - this.playerWidth) {
+                      this.playerX = width - this.playerWidth;
                   }
-                  if (this.y < 0) {
-                      this.y = 0;
+                  if (this.playerY < 0) {
+                      this.playerY = 0;
                   }
-                  if (this.y > height - this.playerHeight) {
-                      this.y = height - this.playerHeight;
+                  if (this.playerY > height - this.playerHeight) {
+                      this.playerY = height - this.playerHeight;
                   }
                     
                   //Collision between Player and Enemy
                   // collideRectRect = function (x, y, w, h, x2, y2, w2, h2) - USE A FOR LOOP FOR MULTIPLE ENEMIES
                   for(var i = 0; i < enemies.length; i++) {
-                    if (collideRectRect(this.x, this.y, this.playerWidth, this.playerHeight, enemies[i].enemyX,
-                      enemies[i].enemyY, enemies[i].enemyWidth, enemies[i].enemyHeight)){
+                      if (collideRectRect(this.playerX, this.playerY, this.playerWidth, this.playerHeight, enemies[i].enemyX,
+                        enemies[i].enemyY, enemies[i].enemyWidth, enemies[i].enemyHeight)){
                         isAlive = false
-                    }
-                  }
-                  
-                  
-                  }
+                      }
+                  }    
+              }
           }
-          
               
-          
-                    
           //Class for the enemy/minions
           class Enemy 
           {
@@ -137,11 +131,11 @@
                   this.enemyHeight = 35;
                   this.velocity = 2;
               }
-              // Move function
-                    
+
+              // Move function      
               moveEnemy() {
-                  var directionX = player.x - this.enemyX;
-                  var directionY = player.y - this.enemyY;
+                  var directionX = player.playerX - this.enemyX;
+                  var directionY = player.playerY - this.enemyY;
                   var hypotenuse = sqrt(directionX ** 2 + directionY ** 2);
                     
                   directionX /= hypotenuse;
@@ -170,30 +164,34 @@
           // Class for projectiles/bullets
           class Projectile {
               constructor(mouseX, mouseY) {
-                  this.x = player.x;
-                  this.y = player.y;
+                  this.x = player.playerX;
+                  this.y = player.playerY;
                   this.mouseX = mouseX;
                   this.mouseY = mouseY;
-                  this.velocity = 5;
+                  this.projectileVelocity = 5;
                   this.diameter = 10;
+                  this.directionX = this.mouseX - this.x;
+                  this.directionY = this.mouseY - this.y;
+
+                  var hypotenuse = sqrt(this.directionX ** 2 + this.directionY ** 2);
+                
+                  this.directionX /= hypotenuse;
+                  this.directionY /= hypotenuse;
               }
               
             shoot() {
                 noStroke();
                 ellipse(this.x, this.y, this.diameter);
 
-                var directionX = this.mouseX - this.x;
-                var directionY = this.mouseY - this.y;
+                this.x += this.directionX * this.projectileVelocity;
+                this.y += this.directionY * this.projectileVelocity;
 
-                var hypotenuse = sqrt(directionX ** 2 + directionY ** 2);
-                
-                directionX /= hypotenuse;
-                directionY /= hypotenuse;
+                if(this.x > this.mousex && this.y > this.mousey)
+                {
+                    for(var i = 0; i < projectiles.length; i++) {
 
-                this.x += directionX * this.velocity;
-                this.y += directionY * this.velocity;
-
-                
+                    }
+                }
             }
            
             collide() {
@@ -208,9 +206,6 @@
                     }
               }
             }
-              // Collision function
-              // Fire function
-              // Show Self
           }
 
           function mousePressed() {
