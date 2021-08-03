@@ -49,7 +49,7 @@
 
                   for(var i = 0; i < projectiles.length; i++) {
                       projectiles[i].shoot();
-                      projectiles[i].collide();
+                      projectiles[i].collideProjectileEnemy();
                   }
                   
                   for(var i = 0; i < enemies.length; i++) {
@@ -153,7 +153,7 @@
               }
               // Collision function
               
-              collideEnemy() {
+              collideEnemyEnemy() {
                   /*for(var i = 0; i < enemies.length; i++) {
                       // if (collideRectRect(this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight,  ))
                   }   
@@ -170,6 +170,8 @@
                   this.mouseY = mouseY;
                   this.projectileVelocity = 5;
                   this.diameter = 10;
+
+                  //Projectile velocity and shenanigans
                   this.directionX = this.mouseX - this.x;
                   this.directionY = this.mouseY - this.y;
 
@@ -187,7 +189,7 @@
                 this.y += this.directionY * this.projectileVelocity;
             }
            
-            collide() {
+            collideProjectileEnemy() {
                 // collideRectCircle(x1, y1, width1, height1, cx, cy, diameter)
               for(var i = 0; i < enemies.length; i++) {
                     if (collideRectCircle(enemies[i].enemyX, enemies[i].enemyY, enemies[i].enemyWidth, enemies[i].enemyHeight, this.x, this.y, this.diameter)) {
