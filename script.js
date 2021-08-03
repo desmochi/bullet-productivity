@@ -55,6 +55,7 @@
                   for(var i = 0; i < enemies.length; i++) {
                     enemies[i].showEnemy();
                     enemies[i].moveEnemy();
+                    enemies[i].collideEnemyEnemy();
                   }
 
               }
@@ -129,20 +130,20 @@
                   this.enemyY = random(100, 500);
                   this.enemyWidth = 35;
                   this.enemyHeight = 35;
-                  this.velocity = 2;
+                  this.enemyVelocity = 2
               }
 
               // Move function      
-              moveEnemy() {
+              moveEnemy() {  
                   var directionX = player.playerX - this.enemyX;
                   var directionY = player.playerY - this.enemyY;
                   var hypotenuse = sqrt(directionX ** 2 + directionY ** 2);
-                    
+
                   directionX /= hypotenuse;
                   directionY /= hypotenuse;
                         
-                  this.enemyX += directionX * this.velocity;
-                  this.enemyY += directionY * this.velocity;
+                  this.enemyX += directionX * this.enemyVelocity;
+                  this.enemyY += directionY * this.enemyVelocity;
               }
                     
               // Show Self function
@@ -155,12 +156,19 @@
               
               collideEnemyEnemy() {
                   for(var i = 0; i < enemies.length; i++) {
-                      if (collideRectRect(this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight, enemies[i].enemyX, enemies[i].enemyY, 
-                          enemies[i].enemyWidth, enemies[i].enemyHeight)) {
-                          console.log("ENEMY COLLIDED WITH ENEMY")
+                      if(this == enemies[i]) {
+                          continue;
+                      }
+
+                      if (collideRectRect(this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight, enemies[i].enemyX, enemies[i].enemyY, enemies[i].enemyWidth, enemies[i].enemyHeight)) { 
+                          this.inverseVelocity();
+                          setTimeout(this.inverseVelocity, 5000);
                       }
                   }   
-                
+              }
+
+              inverseVelocity() {
+                  this.enemyVelocity *= -1;
               }
           }
                     
@@ -198,7 +206,7 @@
                     if (collideRectCircle(enemies[i].enemyX, enemies[i].enemyY, enemies[i].enemyWidth, enemies[i].enemyHeight, this.x, this.y, this.diameter)) {
                          enemies.splice(i, 1);
                          for (var x = 0; x < projectiles.length; x++) {
-                             projectiles.splice(x-1, 1);
+                             projectiles.splice(x-3, 1);
                          } 
                     }
               }
