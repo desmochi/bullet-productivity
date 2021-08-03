@@ -215,7 +215,7 @@
 
           function mousePressed() {
               projectileIndex++;
-              projectiles.push(new Projectile(mouseX, mouseY, projectileIndex));
+              projectiles.push(new Projectile(mouseX, mouseY));
           }
           // Bullet, enemy enemy
           
