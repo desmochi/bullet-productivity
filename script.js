@@ -177,22 +177,21 @@
                   this.velocity = 5;
                   this.diameter = 10;
                   this.projectileIndex = index;
+                  this.directionX = this.mouseX - this.x;
+                  this.directionY = this.mouseY - this.y;
               }
               
             shoot() {
                 noStroke();
                 ellipse(this.x, this.y, this.diameter);
-
-                var directionX = this.mouseX - this.x;
-                var directionY = this.mouseY - this.y;
-
-                var hypotenuse = sqrt(directionX ** 2 + directionY ** 2);
+    
+                var hypotenuse = sqrt(this.directionX ** 2 + this.directionY ** 2);
                 
-                directionX /= hypotenuse;
-                directionY /= hypotenuse;
+                this.directionX /= hypotenuse;
+                this.directionY /= hypotenuse;
 
-                this.x += directionX * this.velocity;
-                this.y += directionY * this.velocity;
+                this.x += this.directionX * this.velocity;
+                this.y += this.directionY * this.velocity;
 
                 
             }
@@ -218,12 +217,5 @@
               projectileIndex++;
               projectiles.push(new Projectile(mouseX, mouseY, projectileIndex));
           }
-          // For loop enemies - Enemies class
-          // Enemies can't collide
-          // Collision of player and enemies results in game over. 
-          
-          // Projectile
-          // - left click or space to fire bullet 
-          // Collision w/ enemy enemy disappears 
-          // Show Self - small circle 
+          // Bullet, enemy enemy
           
