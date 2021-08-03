@@ -185,23 +185,15 @@
 
                 this.x += this.directionX * this.projectileVelocity;
                 this.y += this.directionY * this.projectileVelocity;
-
-                if(this.x > this.mousex && this.y > this.mousey)
-                {
-                    for(var i = 0; i < projectiles.length; i++) {
-
-                    }
-                }
             }
            
             collide() {
                 // collideRectCircle(x1, y1, width1, height1, cx, cy, diameter)
               for(var i = 0; i < enemies.length; i++) {
-                    if (collideRectCircle(enemies[i].enemyX, enemies[i].enemyY, enemies[i].enemyWidth, 
-                        enemies[i].enemyHeight, this.x, this.y, this.diameter)){
-                          enemies.splice(i, 1);
-                         for (var x = 0; x < projectiles.length; x++){
-                             projectiles.splice(x, 1);
+                    if (collideRectCircle(enemies[i].enemyX, enemies[i].enemyY, enemies[i].enemyWidth, enemies[i].enemyHeight, this.x, this.y, this.diameter)) {
+                         enemies.splice(i, 1);
+                         for (var x = 0; x < projectiles.length; x++) {
+                             projectiles.splice(x-1, 1);
                          } 
                     }
               }
