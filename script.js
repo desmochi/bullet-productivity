@@ -6,7 +6,7 @@
           keyCode, push, pop, drawSprites, httpGet, keyIsDown, max, min, textFont, textAlign, CENTER, UP_ARROW, 
           sqrt, noFill, collideRectRect, LEFT_ARROW, frameRate, RIGHT_ARROW, DOWN_ARROW, textSize, round, mouseClicked, keyPressed */
 
-          let backgroundColor, player, enemy, score, hit, isAlive, enemies, projectile;
+          let backgroundColor, player, enemy, score, hit, isAlive, enemies, projectile, projectiles;
 
           // Create objects for bad guys
           // create object for main character
@@ -28,11 +28,10 @@
               colorMode(HSB, 360, 100, 100);
               backgroundColor = 95;
               player = new Player();
-              projectile = new Projectile();
               score = 0;
               isAlive = true;
               enemies = [];
-          
+              projectiles = [];
               for(var i = 0; i < 3; i++) {
                   enemies.push(new Enemy());
               }
@@ -48,15 +47,16 @@
                   player.collidePlayer();
                   player.movePlayer();
                   player.showPlayer();
-                  projectile.showProjectile();
-                  //projectile.shoot();
+
+                  for(var i = 0; i < projectiles.length; i++) {
+                      projectiles[i].shoot();
+                  }
                   
                   for(var i = 0; i < enemies.length; i++) {
                     enemies[i].showEnemy();
                     enemies[i].moveEnemy();
                   }
-                
-                  
+
               }
           }
                     
@@ -168,17 +168,30 @@
                     
           // Class for projectiles/bullets
           class Projectile {
-              constructor() {
+              constructor(mouseX, mouseY) {
                   this.x = player.x;
                   this.y = player.y;
-                  this.velocity = 3;
-                  this.diameter = 3;
+                  this.mouseX = mouseX;
+                  this.mouseY = mouseY;
+                  this.velocity = 5;
+                  this.diameter = 10;
               }
               
-            shoot(){
-                if (mouseClicked() || keyPressed(32)){
-                  this.x += this.velocity;
-              }
+            shoot() {
+                fill(200, 80, 70);
+                noStroke();
+                ellipse(this.x, this.y, this.diameter);
+
+                var directionX = this.mouseX - this.x;
+                var directionY = this.mouseY - this.y;
+
+                var hypotenuse = sqrt(directionX ** 2 + directionY ** 2);
+
+                directionX /= hypotenuse;
+                directionY /= hypotenuse;
+
+                this.x += directionX * this.velocity;
+                this.y += directionY * this.velocity;
             }
             
             collide(){
@@ -191,22 +204,20 @@
                   }
                 
             }
-            
-            showProjectile(){
-               fill(200, 80, 70);
-               noStroke();
-               ellipse(this.x, this.y, this.diameter);
-            }
               // Collision function
               // Fire function
               // Show Self
           }
-                    // For loop enemies - Enemies class
-                    // Enemies can't collide
-                    // Collision of player and enemies results in game over. 
+
+          function mousePressed() {
+              projectiles.push(new Projectile(mouseX, mouseY));
+          }
+          // For loop enemies - Enemies class
+          // Enemies can't collide
+          // Collision of player and enemies results in game over. 
           
-                    // Projectile
-                    // - left click or space to fire bullet 
-                    // Collision w/ enemy enemy disappears 
-                    // Show Self - small circle 
+          // Projectile
+          // - left click or space to fire bullet 
+          // Collision w/ enemy enemy disappears 
+          // Show Self - small circle 
           
