@@ -193,6 +193,8 @@
 
                 this.x += directionX * this.velocity;
                 this.y += directionY * this.velocity;
+
+                
             }
            
             collide() {
@@ -201,6 +203,9 @@
                     if (collideRectCircle(enemies[i].enemyX, enemies[i].enemyY, enemies[i].enemyWidth, 
                         enemies[i].enemyHeight, this.x, this.y, this.diameter)){
                           enemies.splice(i, 1);
+                         for (var x = 0; x < projectiles.length; x++){
+                             projectiles.splice(x, 1);
+                         } 
                     }
               }
             }
