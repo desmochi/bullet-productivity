@@ -55,6 +55,7 @@
                   for(var i = 0; i < enemies.length; i++) {
                     enemies[i].showEnemy();
                     enemies[i].moveEnemy();
+                    enemies[i].collideEnemyWall();
                     enemies[i].collideEnemyEnemy();
                   }
 
@@ -154,6 +155,20 @@
               }
               // Collision function
               
+              collideEnemyWall() {
+                  if (this.enemyX < 0) {
+                      this.inverseVelocity();
+                  }
+                  if (this.enemyX > width - this.enemyWidth) {
+                      this.inverseVelocity();
+                  }
+                  if (this.enemyY < 0) {
+                      this.inverseVelocity();
+                  }
+                  if (this.enemyY > height - this.enemyHeight) {
+                      this.inverseVelocity();
+                  }
+              }
               collideEnemyEnemy() {
                   for(var i = 0; i < enemies.length; i++) {
                       if(this == enemies[i]) {
@@ -162,7 +177,7 @@
 
                       if (collideRectRect(this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight, enemies[i].enemyX, enemies[i].enemyY, enemies[i].enemyWidth, enemies[i].enemyHeight)) { 
                           this.inverseVelocity();
-                          setTimeout(this.inverseVelocity, 5000);
+                          setTimeout(() => this.inverseVelocity(), 700);
                       }
                   }   
               }
@@ -193,7 +208,6 @@
               }
               
             shoot() {
-                noStroke();
                 ellipse(this.x, this.y, this.diameter);
 
                 this.x += this.directionX * this.projectileVelocity;
