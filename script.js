@@ -154,10 +154,13 @@
               // Collision function
               
               collideEnemyEnemy() {
-                  /*for(var i = 0; i < enemies.length; i++) {
-                      // if (collideRectRect(this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight,  ))
+                  for(var i = 0; i < enemies.length; i++) {
+                      if (collideRectRect(this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight, enemies[i].enemyX, enemies[i].enemyY, 
+                          enemies[i].enemyWidth, enemies[i].enemyHeight)) {
+                          console.log("ENEMY COLLIDED WITH ENEMY")
+                      }
                   }   
-                */
+                
               }
           }
                     
