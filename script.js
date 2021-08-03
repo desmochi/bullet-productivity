@@ -6,7 +6,7 @@
           keyCode, push, pop, drawSprites, httpGet, keyIsDown, max, min, textFont, textAlign, CENTER, UP_ARROW, 
           sqrt, noFill, collideRectRect, LEFT_ARROW, frameRate, RIGHT_ARROW, DOWN_ARROW, textSize, round, mouseClicked, keyPressed */
 
-          let backgroundColor, player, enemy, score, hit, isAlive, enemies, projectile, projectiles;
+          let backgroundColor, player, enemy, score, hit, isAlive, enemies, projectile, projectiles, projectileIndex;
 
           // Create objects for bad guys
           // create object for main character
@@ -35,7 +35,7 @@
               for(var i = 0; i < 3; i++) {
                   enemies.push(new Enemy());
               }
-              
+              projectileIndex = -1;
           
           }
                     
@@ -50,6 +50,7 @@
 
                   for(var i = 0; i < projectiles.length; i++) {
                       projectiles[i].shoot();
+                      projectiles[i].collide();
                   }
                   
                   for(var i = 0; i < enemies.length; i++) {
@@ -168,17 +169,17 @@
                     
           // Class for projectiles/bullets
           class Projectile {
-              constructor(mouseX, mouseY) {
+              constructor(mouseX, mouseY, index) {
                   this.x = player.x;
                   this.y = player.y;
                   this.mouseX = mouseX;
                   this.mouseY = mouseY;
                   this.velocity = 5;
                   this.diameter = 10;
+                  this.projectileIndex = index;
               }
               
             shoot() {
-                fill(200, 80, 70);
                 noStroke();
                 ellipse(this.x, this.y, this.diameter);
 
@@ -186,23 +187,22 @@
                 var directionY = this.mouseY - this.y;
 
                 var hypotenuse = sqrt(directionX ** 2 + directionY ** 2);
-
+                
                 directionX /= hypotenuse;
                 directionY /= hypotenuse;
 
                 this.x += directionX * this.velocity;
                 this.y += directionY * this.velocity;
             }
-            
-            collide(){
+           
+            collide() {
                 // collideRectCircle(x1, y1, width1, height1, cx, cy, diameter)
               for(var i = 0; i < enemies.length; i++) {
                     if (collideRectCircle(enemies[i].enemyX, enemies[i].enemyY, enemies[i].enemyWidth, 
                         enemies[i].enemyHeight, this.x, this.y, this.diameter)){
-                          enemies.splice(i,1);
+                          enemies.splice(i, 1);
                     }
-                  }
-                
+              }
             }
               // Collision function
               // Fire function
@@ -210,7 +210,8 @@
           }
 
           function mousePressed() {
-              projectiles.push(new Projectile(mouseX, mouseY));
+              projectileIndex++;
+              projectiles.push(new Projectile(mouseX, mouseY, projectileIndex));
           }
           // For loop enemies - Enemies class
           // Enemies can't collide
