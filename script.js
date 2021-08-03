@@ -6,7 +6,7 @@
           keyCode, push, pop, drawSprites, httpGet, keyIsDown, max, min, textFont, textAlign, CENTER, UP_ARROW, 
           sqrt, noFill, collideRectRect, LEFT_ARROW, frameRate, RIGHT_ARROW, DOWN_ARROW, textSize, round, mouseClicked, keyPressed */
 
-          let backgroundColor, player, enemy, score, hit, isAlive, enemies, projectile, projectiles, projectileIndex;
+          let backgroundColor, player, enemy, score, hit, isAlive, enemies, projectile, projectiles;
 
           // Create objects for bad guys
           // create object for main character
@@ -169,14 +169,13 @@
                     
           // Class for projectiles/bullets
           class Projectile {
-              constructor(mouseX, mouseY, index) {
+              constructor(mouseX, mouseY) {
                   this.x = player.x;
                   this.y = player.y;
                   this.mouseX = mouseX;
                   this.mouseY = mouseY;
                   this.velocity = 5;
                   this.diameter = 10;
-                  this.projectileIndex = index;
               }
               
             shoot() {
@@ -215,8 +214,7 @@
           }
 
           function mousePressed() {
-              projectileIndex++;
-              projectiles.push(new Projectile(mouseX, mouseY, projectileIndex));
+              projectiles.push(new Projectile(mouseX, mouseY));
           }
           // For loop enemies - Enemies class
           // Enemies can't collide
