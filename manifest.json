@@ -15,10 +15,10 @@
       "matches": [
         "<all_urls>"
       ],
-      "js": [ "p5.min.js", "p5.collide2d.js", "bulletHell.js" ]
+      "js": [ "p5.min.js", "p5.collide2d.js", "bullethell.js" ]
     }
   ],
   "browser_action": { 
-    "default_popup": "index.html"
+    "default_popup": "popup.html"
   }
 }
