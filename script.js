@@ -21,18 +21,20 @@ function setup() {
     enemies = [];
     enemyIncrement = 1;
     projectiles = [];
-    setInterval(() => spawnEnemies(), 3000)
+    setInterval(() => spawnEnemies(), 3000);
 }
                     
 function draw() {
     background(backgroundColor);
-
+    console.log(`Enemy Increment: ${enemyIncrement}`);
     if (isAlive == false) {
         push();
         textFont("Impact");
         fill(360, 100, 100);
         textSize(50);
-        text("Game Over", width/4, height/2);
+        text("Game Over", width/3.5, height/2);
+        textSize(15);
+        text("Press SPACE to try again!", width/3, height/3*2)
         displayScoreboard();
         pop();
     } 
@@ -49,10 +51,10 @@ function draw() {
         }
                   
         for(var i = 0; i < enemies.length; i++) {
-        enemies[i].showEnemy();
-        enemies[i].moveEnemy();
-        enemies[i].collideEnemyWall();
-        enemies[i].collideEnemyEnemy();
+            enemies[i].showEnemy();
+            enemies[i].moveEnemy();
+            enemies[i].collideEnemyWall();
+            enemies[i].collideEnemyEnemy();
         }
 
     }
@@ -126,8 +128,8 @@ class Enemy
     {
         this.enemyX = random(100, 500);
         this.enemyY = random(100, 500);
-        this.enemyWidth = 35;
-        this.enemyHeight = 35;
+        this.enemyWidth = 30;
+        this.enemyHeight = 30;
         this.enemyVelocity = 2
     }
 
@@ -236,16 +238,26 @@ function mousePressed() {
 
 function keyPressed() {
     if(keyCode == 32) {
-        console.log("hello");
-        setup();
+        clearInterval(setInterval(() => spawnEnemies(), 3000));
+        location.reload();
+        player = new Player();
+        score = 0;
+        level = 0;
+        isAlive = true;
+        enemies = [];
+        enemyIncrement = 1;
+        projectiles = [];
+        setInterval(() => spawnEnemies(), 3000)
     }
 }
 function spawnEnemies() {
-    for(var i = 0; i < enemyIncrement; i++) {
-        enemies.push(new Enemy());
+    if(isAlive) {
+        for(var i = 0; i < enemyIncrement; i++) {
+            enemies.push(new Enemy());
+        }
+        level++;
+        enemyIncrement++;
     }
-    level++;
-    enemyIncrement++;
 }
 
 function displayScoreboard() {
