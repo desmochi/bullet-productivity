@@ -15,7 +15,7 @@
       "matches": [
         "<all_urls>"
       ],
-      "js": [ "p5.min.js", "p5.collide2d.js", "bullethell.js" ]
+      "js": [ "p5.min.js", "p5.collide2d.js", "bullethell.js", "sketch.js" ]
     }
   ],
   "browser_action": { 
