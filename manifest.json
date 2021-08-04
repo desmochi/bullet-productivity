@@ -2,6 +2,14 @@
     "manifest_version": 2,
     "name" : "Pomodoro Productivity",
     "version": "0.1",
+    "permissions": [
+        "contextMenus",
+        "tabs"
+    ],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
     "content_scripts": [
         {
             "matches": [
