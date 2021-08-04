@@ -1,0 +1,13 @@
+{
+    "manifest_version": 1.0,
+    "name" : "Pomodoro Productivity",
+    "version": "0.1",
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": ["p5.min.js", "p5.collide2d.js", "script.js"]
+        }
+    ]
+}
