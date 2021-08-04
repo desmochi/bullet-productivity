@@ -3,8 +3,53 @@
   <head>
     <title>Pomodoro Timer</title>
     <meta charset="utf-8">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css" rel="stylesheet"/>
   </head>  
   <body>
+      <div id="pomodoro-container">
+          <div>
+              <input type="text" id="pomodoro-clock-task" placeholder="Enter your task..."/>
+          </div>
+          <div id="pomodoro-clock">
+              <div id="pomodoro-timer"></div>
+              <div id="pomodoro-clock-actions">
+                  <button id="pomodor-start">
+                      <i class="fas fa-play" id="play-icon"></i>
+                      <i class="fas fa-pause hidden" id="pause-icon"></i>
+                  </button>
+                  <button id="pomodoro-stop">
+                      <i class="fas fa-stop"></i>
+                  </button>
+              </div>
+          </div>
+
+          <div id="pomodoro-clock-title">
+              <span>
+                  Changes made here will reflect at the start of the next work/break session
+              </span>
+          </div>
+          
+          <div id="pomodoro-clock-actions">
+              <div class="pomodoro-input">
+                  <label>Work Duration</label>
+                  <input name="input-work-duration" id="input-work-duration" type="number" />
+              </div>
+
+              <div class="pomodoro-input">
+                  <label>Break Duration</label>
+                  <input name="input-work-duration" id="input-work-duration" type="number" />
+              </div>
+          </div>
+      </div>
+
+      <div>
+          <div id="pomodoro-info">
+              <h3>Your Sessions</h3>
+              <ul id="pomodoro-sessions"></ul>
+          </div>
+      </div>
+
     <!-- Import p5 -->
     <script src="p5.min.js"></script>
 
@@ -13,5 +58,7 @@
     
     <!-- Run the script -->
     <script src="pomodoro.js"></script>
+
+    <script src="progressBar.min.js"></script>
   </body>
 </html>
