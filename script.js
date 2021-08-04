@@ -4,23 +4,10 @@
           rect, ellipse, stroke, image, loadImage, collideCircleCircle, collideRectCircle, text, 
           mouseX, mouseY, strokeWeight, line, mouseIsPressed, windowWidth, windowHeight, noStroke, 
           keyCode, push, pop, drawSprites, httpGet, keyIsDown, max, min, textFont, textAlign, CENTER, UP_ARROW, 
-          sqrt, noFill, collideRectRect, LEFT_ARROW, frameRate, RIGHT_ARROW, DOWN_ARROW, textSize, round, mouseClicked, keyPressed */
+          sqrt, noFill, collideRectRect, LEFT_ARROW, frameRate, RIGHT_ARROW, DOWN_ARROW, textSize, round, mouseClicked, 
+          keyPressed */
 
-let backgroundColor, player, enemy, score, hit, isAlive, enemies, projectile, projectiles;
-
-// Create objects for bad guys
-// create object for main character
-// Start Position
-// Create move functions
-// Create collision detection
-// make main character able to shoot
-// make there a entrance to new room
-                    
-// Main Class
-// Enemy Class
-// Projectile ?
-// Enemy: Rectangle  - bigger than the player
-// MC: Square
+let backgroundColor, player, enemy, score, hit, isAlive, enemies, projectile, projectiles, enemyIncrement, level;
                     
 function setup() {
     // Canvas & color settings
@@ -29,20 +16,29 @@ function setup() {
     backgroundColor = 95;
     player = new Player();
     score = 0;
+    level = 0;
     isAlive = true;
     enemies = [];
+    enemyIncrement = 1;
     projectiles = [];
-    for(var i = 0; i < 3; i++) {
-        enemies.push(new Enemy());
-    }
+    setInterval(() => spawnEnemies(), 3000)
 }
                     
 function draw() {
     background(backgroundColor);
+
     if (isAlive == false) {
-        text("Game Over", width/2, height/2);
+        push();
+        textFont("Impact");
+        fill(360, 100, 100);
+        textSize(50);
+        text("Game Over", width/4, height/2);
+        displayScoreboard();
+        pop();
     } 
     else {
+        displayScoreboard();
+
         player.collidePlayer();
         player.movePlayer();
         player.showPlayer();
@@ -91,9 +87,10 @@ class Player {
                     
     showPlayer() {
         // draw the dot
+        push();
         fill(200, 80, 70);
-        noStroke();
         rect(this.playerX, this.playerY, this.playerWidth, this.playerHeight);
+        pop();
     }
                     
     collidePlayer() {
@@ -149,9 +146,11 @@ class Enemy
                     
     // Show Self function
     showEnemy() {
+        push();
         stroke(360, 100, 50);
         fill(360, 100, 50);
         rect(this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight);
+        pop();
     }
     // Collision function
               
@@ -207,35 +206,55 @@ class Projectile {
         this.directionY /= hypotenuse;
     }
               
-shoot() {
-    ellipse(this.x, this.y, this.diameter);
+    shoot() {
+        push();
+        fill(200, 80, 70);
+        ellipse(this.x, this.y, this.diameter);
+        pop();
 
-    this.x += this.directionX * this.projectileVelocity;
-    this.y += this.directionY * this.projectileVelocity;
-}
+        this.x += this.directionX * this.projectileVelocity;
+        this.y += this.directionY * this.projectileVelocity;
+    }
            
-collideProjectileEnemy() {
-    // collideRectCircle(x1, y1, width1, height1, cx, cy, diameter)
-    for(var i = 0; i < enemies.length; i++) {
-        if (collideRectCircle(enemies[i].enemyX, enemies[i].enemyY, enemies[i].enemyWidth, enemies[i].enemyHeight, this.x, this.y, this.diameter)) {
-                enemies.splice(i, 1);
-                for (var x = 0; x < projectiles.length; x++) {
-                    projectiles.splice(x-3, 1);
-                } 
+    collideProjectileEnemy() {
+        // collideRectCircle(x1, y1, width1, height1, cx, cy, diameter)
+        for(var i = 0; i < enemies.length; i++) {
+            if (collideRectCircle(enemies[i].enemyX, enemies[i].enemyY, enemies[i].enemyWidth, enemies[i].enemyHeight, this.x, this.y, this.diameter)) {
+                    enemies.splice(i, 1);
+                    score++;
+                    for (var x = 0; x < projectiles.length; x++) {
+                        projectiles.splice(x-3, 1);
+                    } 
+            }
         }
     }
-}
 }
 
 function mousePressed() {
     projectiles.push(new Projectile(mouseX, mouseY));
 }
-// For loop enemies - Enemies class
-// Enemies can't collide
-// Collision of player and enemies results in game over. 
-          
-// Projectile
-// - left click or space to fire bullet 
-// Collision w/ enemy enemy disappears 
-// Show Self - small circle 
-          
+
+function keyPressed() {
+    if(keyCode == 32) {
+        console.log("hello");
+        setup();
+    }
+}
+function spawnEnemies() {
+    for(var i = 0; i < enemyIncrement; i++) {
+        enemies.push(new Enemy());
+    }
+    level++;
+    enemyIncrement++;
+}
+
+function displayScoreboard() {
+    push();
+    textFont("Courier");
+    textSize(15);
+    stroke(10);
+    fill(360, 0, 0);
+    text(`Level: ${level}`, 20, 20);
+    text(`Score: ${score}`, 20, 40);
+    pop();
+}
