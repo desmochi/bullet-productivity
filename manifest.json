@@ -10,12 +10,15 @@
         "scripts": ["background.js"],
         "persistent": false
     },
-    "content_scripts": [
-        {
-            "matches": [
-                "<all_urls>"
-            ],
-            "js": ["p5.min.js", "p5.collide2d.js", "script.js"]
-        }
-    ]
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [ "p5.min.js", "p5.collide2d.js", "bulletHell.js" ]
+    }
+  ],
+  "browser_action": { 
+    "default_popup": "index.html"
+  }
 }

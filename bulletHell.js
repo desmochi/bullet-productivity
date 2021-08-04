@@ -11,7 +11,7 @@ let backgroundColor, player, enemy, score, hit, isAlive, enemies, projectile, pr
                     
 function setup() {
     // Canvas & color settings
-    createCanvas(600, 600);
+    createCanvas(550, 550);
     colorMode(HSB, 360, 100, 100);
     backgroundColor = 95;
 
