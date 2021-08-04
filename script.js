@@ -14,19 +14,24 @@ function setup() {
     createCanvas(600, 600);
     colorMode(HSB, 360, 100, 100);
     backgroundColor = 95;
+
+    //Creates player
     player = new Player();
+    isAlive = true;
     score = 0;
     level = 0;
-    isAlive = true;
+
+    //Creates enemy array, projectile array
     enemies = [];
     enemyIncrement = 1;
     projectiles = [];
+
+    //Starts enemy spawn interval
     spawnInterval = setInterval(() => spawnEnemies(), 3000);
 }
                     
 function draw() {
     background(backgroundColor);
-    console.log(`Enemy Increment: ${enemyIncrement}`);
 
     if (isAlive == false) {
         push();
@@ -89,7 +94,7 @@ class Player {
     
     //Display player
     showPlayer() {
-        // draw the dot
+        // Draw the player
         push();
         fill(200, 80, 70);
         rect(this.playerX, this.playerY, this.playerWidth, this.playerHeight);
@@ -113,11 +118,10 @@ class Player {
         }
                     
         //Collision between Player and Enemy
-        // collideRectRect = function (x, y, w, h, x2, y2, w2, h2) - USE A FOR LOOP FOR MULTIPLE ENEMIES
         for(var i = 0; i < enemies.length; i++) {
             if (collideRectRect(this.playerX, this.playerY, this.playerWidth, this.playerHeight, enemies[i].enemyX,
-            enemies[i].enemyY, enemies[i].enemyWidth, enemies[i].enemyHeight)){
-            isAlive = false
+            enemies[i].enemyY, enemies[i].enemyWidth, enemies[i].enemyHeight)) {
+                isAlive = false
             }
         }    
     }
@@ -126,6 +130,7 @@ class Player {
 //Class for the enemy/minions
 class Enemy 
 {
+    //Constructs enemy
     constructor() 
     {
         this.enemyX = random(100, 500);
@@ -148,7 +153,7 @@ class Enemy
         this.enemyY += directionY * this.enemyVelocity;
     }
                     
-    // Show Self function
+    // Display enemy
     showEnemy() {
         push();
         stroke(360, 100, 50);
@@ -156,8 +161,8 @@ class Enemy
         rect(this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight);
         pop();
     }
-    // Collision function
-              
+
+    // Collision between enemy and wall          
     collideEnemyWall() {
         if (this.enemyX < 0) {
             this.inverseVelocity();
@@ -172,25 +177,28 @@ class Enemy
             this.inverseVelocity();
         }
     }
+
+    //Collision between enemy and enemy
     collideEnemyEnemy() {
         for(var i = 0; i < enemies.length; i++) {
+            //Stops enemy from colliding with itself
             if(this == enemies[i]) {
                 continue;
             }
-
+            //Enemy bounces back for a bit when they collide with each other
             if (collideRectRect(this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight, enemies[i].enemyX, enemies[i].enemyY, enemies[i].enemyWidth, enemies[i].enemyHeight)) { 
                 this.inverseVelocity();
                 setTimeout(() => this.inverseVelocity(), 700);
             }
         }   
     }
-
+    //Inverse velocity function for going backwards
     inverseVelocity() {
         this.enemyVelocity *= -1;
     }
 }
                     
-// Class for projectiles/bullets
+//Class for projectiles/bullets
 class Projectile {
     constructor(mouseX, mouseY) {
         this.x = player.playerX;
@@ -209,7 +217,8 @@ class Projectile {
         this.directionX /= hypotenuse;
         this.directionY /= hypotenuse;
     }
-              
+    
+    //Creates bullet and shoots it
     shoot() {
         push();
         fill(200, 80, 70);
@@ -220,24 +229,27 @@ class Projectile {
         this.y += this.directionY * this.projectileVelocity;
     }
            
+    //Collision between bullet and enemy
     collideProjectileEnemy() {
-        // collideRectCircle(x1, y1, width1, height1, cx, cy, diameter)
         for(var i = 0; i < enemies.length; i++) {
             if (collideRectCircle(enemies[i].enemyX, enemies[i].enemyY, enemies[i].enemyWidth, enemies[i].enemyHeight, this.x, this.y, this.diameter)) {
-                    enemies.splice(i, 1);
-                    score++;
-                    for (var x = 0; x < projectiles.length; x++) {
-                        projectiles.splice(x-3, 1);
-                    } 
+                enemies.splice(i, 1);
+                score++;
+
+                for (var x = 0; x < projectiles.length; x++) {
+                    projectiles.splice(x-3, 1);
+                } 
             }
         }
     }
 }
 
+//Component of shooting bullet
 function mousePressed() {
     projectiles.push(new Projectile(mouseX, mouseY));
 }
 
+//Reloads game with spacebar pressed
 function keyPressed() {
     if(keyCode == 32) {
         clearInterval(spawnInterval);
@@ -251,6 +263,8 @@ function keyPressed() {
         spawnInterval = setInterval(() => spawnEnemies(), 3000);
     }
 }
+
+//Spawn enemies (based on interval)
 function spawnEnemies() {
     if(isAlive) {
         for(var i = 0; i < enemyIncrement; i++) {
@@ -261,6 +275,7 @@ function spawnEnemies() {
     }
 }
 
+//Scoreboard: score + level
 function displayScoreboard() {
     push();
     textFont("Courier");
