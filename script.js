@@ -7,7 +7,7 @@
           sqrt, noFill, collideRectRect, LEFT_ARROW, frameRate, RIGHT_ARROW, DOWN_ARROW, textSize, round, mouseClicked, 
           keyPressed */
 
-let backgroundColor, player, enemy, score, hit, isAlive, enemies, projectile, projectiles, enemyIncrement, level;
+let backgroundColor, player, enemy, score, hit, isAlive, enemies, projectile, projectiles, enemyIncrement, level, spawnInterval;
                     
 function setup() {
     // Canvas & color settings
@@ -21,12 +21,13 @@ function setup() {
     enemies = [];
     enemyIncrement = 1;
     projectiles = [];
-    setInterval(() => spawnEnemies(), 3000);
+    spawnInterval = setInterval(() => spawnEnemies(), 3000);
 }
                     
 function draw() {
     background(backgroundColor);
     console.log(`Enemy Increment: ${enemyIncrement}`);
+
     if (isAlive == false) {
         push();
         textFont("Impact");
@@ -70,8 +71,7 @@ class Player {
         this.playerVelocity = 3;
 }
                     
-    // Move function
-                    
+    // Player move function       
     movePlayer() {
         if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
         this.playerY -= this.playerVelocity;
@@ -86,7 +86,8 @@ class Player {
         this.playerX += this.playerVelocity;
         }
     }
-                    
+    
+    //Display player
     showPlayer() {
         // draw the dot
         push();
@@ -94,7 +95,8 @@ class Player {
         rect(this.playerX, this.playerY, this.playerWidth, this.playerHeight);
         pop();
     }
-                    
+    
+    
     collidePlayer() {
         //Collision with wall
         if (this.playerX < 0) {
@@ -238,8 +240,7 @@ function mousePressed() {
 
 function keyPressed() {
     if(keyCode == 32) {
-        clearInterval(setInterval(() => spawnEnemies(), 3000));
-        location.reload();
+        clearInterval(spawnInterval);
         player = new Player();
         score = 0;
         level = 0;
@@ -247,7 +248,7 @@ function keyPressed() {
         enemies = [];
         enemyIncrement = 1;
         projectiles = [];
-        setInterval(() => spawnEnemies(), 3000)
+        spawnInterval = setInterval(() => spawnEnemies(), 3000);
     }
 }
 function spawnEnemies() {
