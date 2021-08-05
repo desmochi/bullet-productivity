@@ -21,22 +21,44 @@ var isPaused;
 var timeText = "";
 var timerInterval;
 var startButtonRunning;
+var breakTimerIndex;
 
 function setup(){
-    createCanvas(550, 550);
+    createCanvas(300, 300);
 
-    workTime = 1500;
-    breakTime = 300;
+    workTime = 10;
+    breakTime = 5;
     secondsLeft = "";
     timespent = 0;
     minutesLeft = "";
     timeLeft = "";
     isRunning = false;
     isPaused = false;
+    breakTimerIndex = false;
+    workTimerIndex = true;
+    firstTimer = true;
+
+    time = workTime;
 }
 
 function draw(){
     displayBackground();
+
+    if(firstTimer) {
+        time = workTime;
+        firstTimer = false;
+        breakTimerNext = true;
+    }
+    else if(timeLeft == "00 : 00" && breakTimerNext == true) {
+        console.log("switched to break timer");
+        breakTimer();
+        breakTimerNext = false;
+    }
+    else if(timeLeft == "00 : 00" && workTimerNext == true) {
+        console.log("switched to work timer")
+        workTimer();
+        workTimerNext = false;
+    }
 
     secondsToMin();
     remainingSeconds();
@@ -45,18 +67,17 @@ function draw(){
 
 // calculate # of minutes left 
 function secondsToMin() {
-    minutesLeft = workTime/60;
+    minutesLeft = time/60;
     minutesLeft = Math.floor(minutesLeft);
     if (minutesLeft < 10){
         minutesLeft = "0"+ minutesLeft;
     }
     minutesLeft = minutesLeft + "";
-    console.log(minutesLeft);
 }
 
 // calculate # of seconds left with %
 function remainingSeconds(){
-    secondsLeft = workTime % 60;
+    secondsLeft = time % 60;
     Math.floor(secondsLeft);
     if (secondsLeft < 10){
         secondsLeft = "0" + secondsLeft;
@@ -67,14 +88,9 @@ function remainingSeconds(){
 function start() {
     if(!startButtonRunning)
     {
-        timerInterval = setInterval(() => workTime--, 1000);
+        timerInterval = setInterval(() => time--, 1000);
     }
     startButtonRunning = true;
-}
-
-function reset() {
-    workTime = 1500;
-    pause();
 }
 
 function pause(){
@@ -84,24 +100,40 @@ function pause(){
 
 // display needs to include filler zero for the single digits
 function displayTime(){
+    if(breakTimerNext == false) {
+        fill(360, 0, 0);
+        textSize(30);
+        text("BREAK TIME!", width/2-80, height/4);
+    }
+    else {
+        fill(360, 0, 0);
+        textSize(30);
+        text("WORK TIME!", width/2-80, height/4);
+    }
     timeLeft = minutesLeft + " : " + secondsLeft;
     fill(360, 0, 0);
-    textSize(20);
-    timeText = text(`${timeLeft}`, width/2, height/2);
+    textSize(30);
+    timeText = text(`${timeLeft}`, width/2-30, height/2);
 }
 
 function displayBackground() {
-    background(95);
+    background(360);
 
     buttonStart = createButton('Start');
-    buttonStart.position(20,20);
+    buttonStart.position(width/3-10, height/4*3);
     buttonStart.mousePressed(start)
-    
-    buttonStop = createButton('Reset');
-    buttonStop.position(20,60);
-    buttonStop.mousePressed(reset)
 
     buttonPause = createButton('Pause');
-    buttonPause.position(20,100);
+    buttonPause.position(width/3*2-10, height/4*3);
     buttonPause.mousePressed(pause)
+}
+
+function workTimer() {
+    time = workTime;
+    breakTimerNext = true;
+}
+
+function breakTimer() {
+    time = breakTime;
+    workTimerNext = true;
 }
