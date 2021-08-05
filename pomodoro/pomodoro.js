@@ -7,205 +7,109 @@
           sqrt, noFill, collideRectRect, LEFT_ARROW, frameRate, RIGHT_ARROW, DOWN_ARROW, textSize, round, mouseClicked, 
           keyPressed */
 
-var updatedWorkSessionDuration;
-var updatedBreakSessionDuration;
+var worktime;
+var timespent;
+var secondsleft;
+var breaktime;
+var minutesleft;
+var timeleft;
+var isRunning;
+var buttonStart;
+var buttonStop;
+var buttonPause;
+var isPaused; 
+//minutesleft + ":" + secondsleft
 
-var workDurationInput = document.querySelector('#input-work-duration');
-var breakDurationInput = document.querySelector('#input-break-duration');
+function setup(){
+    createCanvas(550, 550);
+    background(95);
+    worktime = 1500;
+    breaktime = 300;
+    secondsleft = "";
+    timespent = 0;
+    minutesleft = "";
+    timeleft = "";
+    isRunning = false;
+    isPaused = false;
 
-workDurationInput.value = '25';
-breakDurationInput.value = '5';
-var isClockRunning = false;
-var isClockStopped = true;
-var type = 'Work'
+    buttonStart = createButton('Start');
+    buttonStart.position(20,20);
+    //buttonStart.mousePressed(buttonStartPressed)
+    
+    buttonStop = createButton('Stop');
+    buttonStop.position(20,60);
+    //buttonStop.mousePressed(buttonStopPressed)
 
-//In seconds
-var workSessionTimer = 1500;
-var currentTimeLeftInSession = 1500;
-var breakSessionDuration = 300;
-var timeSpentInCurrentSession = 0;
-
-const pomodoroTimer = document.querySelector('#pomodoro-timer');
-
-const startButton = document.querySelector('#pomodoro-start');
-const stopButton = document.querySelector('#pomdoro-stop');
-
-var currentTaskLabel = document.querySelector('#pomodoro-clock-task')
-
-startButton.addEventListener('click', () => {
-    toggleClock();
-})
-
-stopButton.addEventListener('click', () => {
-    toggleClock(true);
-})
-
-workDurationInput.addEventListener('input', () => {
-    updatedWorkSessionDuration = minuteToSeconds(workDurationInput.value);
-})
-
-breakDurationInput.addEventListener('input', () => {
-    updatedBreakWorkSessionDuration = minuteTOSeconds(breakDurationInput.value);
-})
-const toggleClock = (reset) => {
-    console.log("hello start");
-    togglePlayPauseIcon(reset);
-
-    if(reset) {
-        //Stop timer
-        stopClock()
-    }
-    else {
-        if(isClockStopped) {
-            setUpdatedTimers();
-            isClockStopped = false;
-        }
-
-        if(clockIsRunning == true) {
-            //Stops the clock from decreasing time when paused
-            clearInterval(clockTimer);
-
-            //Pause timer
-            isClockRunning = false;
-        }
-        else {
-            //Start timer
-            isClockRunning = true;
-
-            //Decrease time left
-            clockTimer = setInterval(() => {
-                stepDown();
-                displayCurrentTimeLeftInSession();
-                progressBar.set(calculateSessionProgress())
-            }, 1000)
-        }
-        showStopIcon();
-    }
+    buttonPause = createButton('Pause');
+    buttonPause.position(20,100);
+    //buttonPause.mousePressed(buttonPausePressed)
+    
 }
 
-const displayCurrentTimeLeftInSession = () => {
-    const secondsLeft = currentTimeLeftInSession;
-    var result = '';
-    const seconds = secondsLeft % 60;
-    const minutes = parseInt(secondsLeft / 60) % 60;
-    var hours = parseInt(secondsLeft / 3600);
+function draw(){
+    if (isRunning){
+        secondsToMin();
+        remainingSeconds();
+        buttonStart.mousePressed(buttonStartPressed)
+        buttonStop.mousePressed(buttonStopPressed)
+        buttonPause.mousePressed(buttonPausePressed)
+        displayTime();
+    } else if (isPaused) {
+        displayTime();
+    } else if (!isPaused && !isRunning){
+        secondsToMin();
+        remainingSeconds();
+        displayTime();
+    }
 
-    function addLeadingZeroes(time) {
-        return time < 10 ? `0${time}` : time;
-    }
-    if(hours > 0) {
-        result += `${hours}:`;
-    }
-    result += `${addLeadingZeroes(minutes)}:${addLeadingZeroes(seconds)}`;
-    progressBar.text.innerText = result.toString();
 }
 
-const stopClock = () => {
-    setUpdatedTimers();
-    displaySessionLog(type);
-    clearInterval(clockTimer);
-    isClockRunning = false;
-    isClockStopped = true;
-    timeSpentInCurrentSession = 0;
-    currentTimeLeftInSession = workSessionDuration;
-    displayCurrentTimeLeftInSession();
-    type = 'Work';
-}
-
-const stepDown = () => {
-    if(currentTimeLeftInSession > 0) {
-        currentTimeLeftInSession--;
-        timeSpentInCurrentSession++;
+// calculate # of minutes left 
+function secondsToMin() {
+    minutesleft = worktime/60;
+    minutesleft = Math.floor(minutesleft);
+    if (minutesleft < 10){
+        minutesleft = "0"+ minutesleft;
     }
-    else if (currentTimeLeftInSession == 0) {
-        timeSpentInCurrentSession = 0;
-        if(type == 'Work') {
-            currentTimeLeftInSession = breakSessionDuration;
-            displaySessionLog('Work');
-            type = 'Break';
+    minutesleft = minutesleft + "";
+    console.log(minutesleft);
+}
 
-            currentTaskLabel.value = 'Break';
-            currentTaskLabel.disabled = true;
-        }
-        else {
-            currentTimeLeftInSession = workSessionDuration;
-            type = 'Work';
-
-            if(CurrentLabel.value == 'Break') {
-                currentTaskLabel.value = workSessionLabel;
-            }
-            currentTaskLabel.disabled = false;
-            displaySessionLog('Break');
-        }
+// calculate # of seconds left with %
+function remainingSeconds(){
+    secondsleft = worktime % 60;
+    Math.floor(secondsleft);
+    if (secondsleft < 10){
+        secondsleft = "0"+ secondsleft;
     }
-    displayCurrentTimeLeftInSession();
+    secondsleft = secondsleft + "";
 }
 
-const displaySessionLog = (type) => {
-    const sesionsList = document.querySelector('#pomodoro-sessions');
-    const li = document.createElement('li');
-    if(type == 'Work') {
-        sessionLabel = currentTaskLabel.value ? currentTaskLabel.value : 'Work';
-        workSessionLabel = sessionLabel;
-    }
-    else {
-        sessionLabel = 'Break';
-    }
-    var elapsedTime = parseInt(timeSpentInCurrentSession / 60);
-    elapsedTime = elapsedTime > 0 ? elapsedTime : '< 1';
-
-    const text = document.createTextMode(`${sessionLabel} : ${elapsedTime} min`)
-    li.appendChild(text);
-    sessionsList.appendChild(li);
+function buttonStartPressed(){
+    console.log("starting");
+    isRunning = true;
+    worktime--;
 }
 
-const minuteToSeconds = (mihns) => {
-    return mins * 60;
+function buttonStopPressed(){
+    console.log("stopping");
+    isRunning = false;
+    isPaused = false;
+    worktime = 1500;
 }
 
-const setUpdatedTimers = () => {
-    if(type == 'Work') {
-        currentTimeLeftInSession = updatedWorkSessionDuration ? updatedWorkSessionDuration : workSessionDuration;
-        workSessionDuration = currentTimeLeftInSession;
-    }
-    else {
-        currentTimeLeftInSession = updatedBreakSessionDuration ? updatedBreakSessionDuration : breakSessionDuration;
-        breakSessionDuration = currentTimeLeftInSession;
-    }
+function buttonPausePressed(){
+    console.log("pausing");
+    isPaused = true;
+    isRunning = false;
 }
 
-const togglePlayPauseIcon = (reset) => {
-    const playIcon = document.querySelector('#play-icon');
-    const pauseIcon = document.querySelector('pause-icon');
-
-    if(reset) {
-        if(playIcon.classList.contains('hidden')) {
-            playIcon.classList.remove('hidden');
-        }
-        if(!pauseIcon.classList.contains('hidden')) {
-            pauseIcon.classList.add('hidden');
-        }
-        else {
-            playIcon.classList.toggle('hidden');
-            pauseIcon.classList.toggle('hidden');
-        }
-    }
+// display needs to include filler zero for the single digits
+function displayTime(){
+    timeleft = minutesleft + " : " + secondsleft;
+    fill(360, 0, 0);
+    textSize(20);
+    text(`${timeleft}`, width/2, height/2);
 }
 
-const showStopIcon = () => {
-    const stopButton = document.querySelector('#pomodoro-stop');
-    stopButton.classList.remove('hidden');
-}
 
-const progressBar = new ProgressBar.Circle('#pomodoro-timer', {
-    strokeWidth: 2,
-    text: {
-        value: '25:00',
-    },
-    trailColor: '#f4f4f4',
-})
-
-const calculateSessionProgress = () => {
-    const sessionDuration = type == 'Work' ? workSessionDuration : breakSessionDuration;
-    return (timeSpentInCurrentSession / sessionDuration) * 10;
-}
