@@ -22,9 +22,14 @@ var timeText = "";
 var timerInterval;
 var startButtonRunning;
 var breakTimerIndex;
+var img;
 
+function preload() {
+    img = loadImage('clock.jpg');
+}
 function setup(){
     createCanvas(300, 300);
+    colorMode(HSB, 360, 100, 100);
 
     workTime = 10;
     breakTime = 5;
@@ -101,30 +106,40 @@ function pause(){
 // display needs to include filler zero for the single digits
 function displayTime(){
     if(breakTimerNext == false) {
-        fill(360, 0, 0);
+        push();
+        fill(210, 100, 100);
         textSize(30);
-        text("BREAK TIME!", width/2-80, height/4);
+        textFont("Helvetica");
+        text("Break Time!", width/2-70, height/5);
+        pop();
     }
     else {
-        fill(360, 0, 0);
+        push();
+        fill(210, 100, 100);
         textSize(30);
-        text("WORK TIME!", width/2-80, height/4);
+        textFont("Helvetica");
+        text("Work Time!", width/2-70, height/5);
+        pop();
     }
     timeLeft = minutesLeft + " : " + secondsLeft;
     fill(360, 0, 0);
     textSize(30);
-    timeText = text(`${timeLeft}`, width/2-30, height/2);
+    timeText = text(`${timeLeft}`, width/2-40, height/3);
 }
 
 function displayBackground() {
     background(360);
 
+    image(img, width/2-40, height/2-20, 80, 80);
+
     buttonStart = createButton('Start');
-    buttonStart.position(width/3-10, height/4*3);
+    buttonStart.position(width/3-20, height/10*8);
+    buttonStart.size(60, 30);
     buttonStart.mousePressed(start)
 
     buttonPause = createButton('Pause');
-    buttonPause.position(width/3*2-10, height/4*3);
+    buttonPause.position(width/3*2-20, height/10*8);
+    buttonPause.size(60, 30);
     buttonPause.mousePressed(pause)
 }
 
