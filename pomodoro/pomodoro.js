@@ -7,109 +7,101 @@
           sqrt, noFill, collideRectRect, LEFT_ARROW, frameRate, RIGHT_ARROW, DOWN_ARROW, textSize, round, mouseClicked, 
           keyPressed */
 
-var worktime;
-var timespent;
-var secondsleft;
-var breaktime;
-var minutesleft;
-var timeleft;
+var workTime;
+var timeSpent;
+var secondsLeft;
+var breakTime;
+var minutesLeft;
+var timeLeft;
 var isRunning;
 var buttonStart;
 var buttonStop;
 var buttonPause;
 var isPaused; 
-//minutesleft + ":" + secondsleft
+var timeText = "";
+var timerInterval;
+var startButtonRunning;
 
 function setup(){
     createCanvas(550, 550);
-    background(95);
-    worktime = 1500;
-    breaktime = 300;
-    secondsleft = "";
+
+    workTime = 1500;
+    breakTime = 300;
+    secondsLeft = "";
     timespent = 0;
-    minutesleft = "";
-    timeleft = "";
+    minutesLeft = "";
+    timeLeft = "";
     isRunning = false;
     isPaused = false;
-
-    buttonStart = createButton('Start');
-    buttonStart.position(20,20);
-    //buttonStart.mousePressed(buttonStartPressed)
-    
-    buttonStop = createButton('Stop');
-    buttonStop.position(20,60);
-    //buttonStop.mousePressed(buttonStopPressed)
-
-    buttonPause = createButton('Pause');
-    buttonPause.position(20,100);
-    //buttonPause.mousePressed(buttonPausePressed)
-    
 }
 
 function draw(){
-    if (isRunning){
-        secondsToMin();
-        remainingSeconds();
-        buttonStart.mousePressed(buttonStartPressed)
-        buttonStop.mousePressed(buttonStopPressed)
-        buttonPause.mousePressed(buttonPausePressed)
-        displayTime();
-    } else if (isPaused) {
-        displayTime();
-    } else if (!isPaused && !isRunning){
-        secondsToMin();
-        remainingSeconds();
-        displayTime();
-    }
+    displayBackground();
 
+    secondsToMin();
+    remainingSeconds();
+    displayTime();
 }
 
 // calculate # of minutes left 
 function secondsToMin() {
-    minutesleft = worktime/60;
-    minutesleft = Math.floor(minutesleft);
-    if (minutesleft < 10){
-        minutesleft = "0"+ minutesleft;
+    minutesLeft = workTime/60;
+    minutesLeft = Math.floor(minutesLeft);
+    if (minutesLeft < 10){
+        minutesLeft = "0"+ minutesLeft;
     }
-    minutesleft = minutesleft + "";
-    console.log(minutesleft);
+    minutesLeft = minutesLeft + "";
+    console.log(minutesLeft);
 }
 
 // calculate # of seconds left with %
 function remainingSeconds(){
-    secondsleft = worktime % 60;
-    Math.floor(secondsleft);
-    if (secondsleft < 10){
-        secondsleft = "0"+ secondsleft;
+    secondsLeft = workTime % 60;
+    Math.floor(secondsLeft);
+    if (secondsLeft < 10){
+        secondsLeft = "0" + secondsLeft;
     }
-    secondsleft = secondsleft + "";
+    secondsLeft = secondsLeft + "";
 }
 
-function buttonStartPressed(){
-    console.log("starting");
-    isRunning = true;
-    worktime--;
+function start() {
+    if(!startButtonRunning)
+    {
+        timerInterval = setInterval(() => workTime--, 1000);
+    }
+    startButtonRunning = true;
 }
 
-function buttonStopPressed(){
-    console.log("stopping");
-    isRunning = false;
-    isPaused = false;
-    worktime = 1500;
+function reset() {
+    workTime = 1500;
+    pause();
 }
 
-function buttonPausePressed(){
-    console.log("pausing");
-    isPaused = true;
-    isRunning = false;
+function pause(){
+    clearInterval(timerInterval);
+    startButtonRunning = false;
 }
 
 // display needs to include filler zero for the single digits
 function displayTime(){
-    timeleft = minutesleft + " : " + secondsleft;
+    timeLeft = minutesLeft + " : " + secondsLeft;
     fill(360, 0, 0);
     textSize(20);
-    text(`${timeleft}`, width/2, height/2);
+    timeText = text(`${timeLeft}`, width/2, height/2);
 }
 
+function displayBackground() {
+    background(95);
 
+    buttonStart = createButton('Start');
+    buttonStart.position(20,20);
+    buttonStart.mousePressed(start)
+    
+    buttonStop = createButton('Reset');
+    buttonStop.position(20,60);
+    buttonStop.mousePressed(reset)
+
+    buttonPause = createButton('Pause');
+    buttonPause.position(20,100);
+    buttonPause.mousePressed(pause)
+}
