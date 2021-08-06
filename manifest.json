@@ -15,7 +15,7 @@
       "matches": [
         "<all_urls>"
       ],
-      "js": [ "/libraries/p5.min.js", "/libraries/p5.collide2d.js", "/bullethell/bullethell.js", "/sketch/sketch.js" ]
+      "js": [ "/libraries/p5.min.js", "/libraries/p5.collide2d.js", "/pomodoro/pomodoro.js", "/bullethell/bullethell.js", "/sketch/sketch.js" ]
     }
   ],
   "browser_action": {
